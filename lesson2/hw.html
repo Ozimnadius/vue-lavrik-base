@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link href="css/styles.css" rel="stylesheet">
+    <style>
+        .content {
+            height: 300px;
+            overflow: auto;
+        }
+    </style>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+<div class="wrapper">
+    <div class="sample">
+        <form v-if="!dataSended" @submit.prevent="sendData">
+            <div class="content alert alert-info" @scroll="checkScroll">
+                <p>This text no one reads. This text no one reads. This text no one reads.</p>
+                <p>This text no one reads. This text no one reads. This text no one reads.</p>
+                <p>This text no one reads. This text no one reads. This text no one reads.</p>
+                <p>This text no one reads. This text no one reads. This text no one reads.</p>
+                <p>This text no one reads. This text no one reads. This text no one reads.</p>
+                <p>This text no one reads. This text no one reads. This text no one reads.</p>
+                <p>This text no one reads. This text no one reads. This text no one reads.</p>
+                <p>This text no one reads. This text no one reads. This text no one reads.</p>
+                <p>This text no one reads. This text no one reads. This text no one reads.</p>
+                <p>This text no one reads. This text no one reads. This text no one reads.</p>
+                <p>This text no one reads. This text no one reads. This text no one reads.</p>
+                <p>This text no one reads. This text no one reads. This text no one reads.</p>
+                <p>This text no one reads. This text no one reads. This text no one reads.</p>
+                <p>This text no one reads. This text no one reads. This text no one reads.</p>
+                <p>This text no one reads. This text no one reads. This text no one reads.</p>
+                <p>This text no one reads. This text no one reads. This text no one reads.</p>
+                <p>This text no one reads. This text no one reads. This text no one reads.</p>
+                <p>This text no one reads. This text no one reads. This text no one reads.</p>
+                <p>This text no one reads. This text no one reads. This text no one reads.</p>
+                <p>This text no one reads. This text no one reads. This text no one reads.</p>
+            </div>
+            <div class="progress">
+                <div class="progress-bar"
+                     role="progressbar"
+                     v-bind:style="{ width: `${progress}%`}"
+                     aria-valuenow="25"
+                     aria-valuemin="0"
+                     aria-valuemax="100"></div>
+            </div>
+            <div v-if="isRead">
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               v-model="agree">
+                        Agree all
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               v-model="spam">
+                        Get spam
+                    </label>
+                </div>
+                <div v-if="spam">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input"
+                                   type="radio"
+                                   value="email"
+                                   v-model="type">
+                            Email
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input"
+                                   type="radio"
+                                   value="phone"
+                                   v-model="type">
+                            Phone
+                        </label>
+                    </div>
+                </div>
+                <hr>
+                <button class="btn btn-primary" v-bind:disabled="!agree">
+                    Send Data
+                </button>
+            </div>
+        </form>
+        <div v-else>
+            <table class="table table-bordered">
+                <tr>
+                    <td>Agree all</td>
+                    <td v-bind:class="[agree?'text-success':'text-danger']">{{agreeStatus}}</td>
+                </tr>
+                <tr>
+                    <td>Get spam</td>
+                    <td v-bind:class="[spam ?'text-success':'text-danger']">{{spamStatus}}</td>
+                </tr>
+                <tr v-if="spam">
+                    <td>Spam type</td>
+                    <td>{{type}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+
+    Vue.createApp({
+        data: () => ({
+            agree: false,
+            spam: false,
+            type: 'phone',
+            isRead: false,
+            dataSended: false,
+            progress: 0
+        }),
+        computed: {
+            agreeStatus() {
+                return this.agree ? 'Yes' : 'No';
+            },
+            spamStatus() {
+                return this.spam ? 'Yes' : 'No';
+            }
+        },
+        methods: {
+            checkScroll(e) {
+                let target = e.target;
+                let fullScroll = target.scrollHeight - target.clientHeight;
+                this.progress = target.scrollTop/fullScroll*100;
+                this.isRead = this.progress===100;
+            },
+            sendData() {
+                this.dataSended = true;
+            }
+        }
+    }).mount('.sample');
+</script>
+</body>
+</html>
